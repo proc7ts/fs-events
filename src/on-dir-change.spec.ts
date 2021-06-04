@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from '@jest/globals';
 import { DeltaSet } from '@proc7ts/delta-set';
 import { OnEvent } from '@proc7ts/fun-events';
-import { newPromiseResolver } from '@proc7ts/primitives/src';
+import { newPromiseResolver } from '@proc7ts/primitives';
 import { Supply } from '@proc7ts/supply';
 import { mkdir, mkdtemp, rmdir, unlink, writeFile } from 'fs/promises';
 import { basename, join } from 'path';

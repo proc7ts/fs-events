@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "module": "ES2020",
+    "target": "ES2020",
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "lib": [
+      "ES2020"
+    ],
+    "types": [
+      "node"
+    ],
+    "outDir": "target/js",
+    "sourceMap": true,
+    "newLine": "LF"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

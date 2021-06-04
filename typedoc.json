@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "name": "Supply",
+  "out": "./target/typedoc",
+  "tsconfig": "tsconfig.main.json"
+}

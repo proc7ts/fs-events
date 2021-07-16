@@ -276,7 +276,7 @@ describe('onDirChange', () => {
     return fileName;
   }
 
-  function delay(ms = 10): Promise<void> {
+  function delay(ms = 25): Promise<void> {
     return new Promise(resolve => {
       setTimeout(resolve, ms);
     });

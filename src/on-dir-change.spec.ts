@@ -252,6 +252,7 @@ describe('onDirChange', () => {
 
       whenRead() {
         resolver = newPromiseResolver();
+
         return resolver.promise();
       },
     };

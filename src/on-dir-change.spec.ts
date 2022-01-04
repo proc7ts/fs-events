@@ -3,9 +3,9 @@ import { DeltaSet } from '@proc7ts/delta-set';
 import { OnEvent } from '@proc7ts/fun-events';
 import { newPromiseResolver } from '@proc7ts/primitives';
 import { Supply } from '@proc7ts/supply';
-import { mkdir, mkdtemp, rmdir, unlink, writeFile } from 'fs/promises';
-import { basename, join } from 'path';
-import { fileURLToPath, URL } from 'url';
+import { mkdir, mkdtemp, rmdir, unlink, writeFile } from 'node:fs/promises';
+import { basename, join } from 'node:path';
+import { fileURLToPath, URL } from 'node:url';
 import { DirChangeEntry, onDirChange } from './on-dir-change';
 
 describe('onDirChange', () => {

@@ -1,9 +1,9 @@
 import { DeltaSet } from '@proc7ts/delta-set';
 import { OnEvent, onEventBy, sendEventsTo, shareOn } from '@proc7ts/fun-events';
 import { Supply } from '@proc7ts/supply';
-import { BigIntStats, Dirent, watch } from 'fs';
-import { readdir, stat } from 'fs/promises';
-import { join } from 'path';
+import { BigIntStats, Dirent, watch } from 'node:fs';
+import { readdir, stat } from 'node:fs/promises';
+import { join } from 'node:path';
 
 /**
  * Directory changes event entry.

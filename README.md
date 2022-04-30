@@ -1,12 +1,11 @@
-File System Events Processor
-============================
+# File System Events Processor
 
 [![NPM][npm-image]][npm-url]
 [![Build Status][build-status-img]][build-status-link]
 [![Code Quality][quality-img]][quality-link]
 [![Coverage][coverage-img]][coverage-link]
 [![GitHub Project][github-image]][github-url]
-[![API Documentation][api-docs-image]][API documentation]
+[![API Documentation][api-docs-image]][api documentation]
 
 [npm-image]: https://img.shields.io/npm/v/@proc7ts/fs-events.svg?logo=npm
 [npm-url]: https://www.npmjs.com/package/@proc7ts/fs-events
@@ -19,4 +18,4 @@ File System Events Processor
 [github-image]: https://img.shields.io/static/v1?logo=github&label=GitHub&message=project&color=informational
 [github-url]: https://github.com/proc7ts/fs-events
 [api-docs-image]: https://img.shields.io/static/v1?logo=typescript&label=API&message=docs&color=informational
-[API documentation]: https://proc7ts.github.io/fs-events/ 
+[api documentation]: https://proc7ts.github.io/fs-events/

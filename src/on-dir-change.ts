@@ -11,7 +11,6 @@ import { join } from 'node:path';
  * Corresponds to a file in the tracked directory.
  */
 export interface DirChangeEntry {
-
   /**
    * File name relative to the watched directory.
    */
@@ -21,14 +20,12 @@ export interface DirChangeEntry {
    * File stats.
    */
   readonly stats: BigIntStats;
-
 }
 
 /**
  * Directory changes tracking options.
  */
 export interface DirChangeOptions {
-
   /**
    * Checks whether the file should be tracked.
    *
@@ -51,7 +48,6 @@ export interface DirChangeOptions {
    * @param oldEntry - The already reported file entry with the same name.
    */
   isModified?(this: void, newEntry: DirChangeEntry, oldEntry: DirChangeEntry): boolean;
-
 }
 
 /**
@@ -63,28 +59,23 @@ export interface DirChangeOptions {
  * @returns An `OnEvent` sender of `DeltaSet` of tracked directory file entries.
  */
 export function onDirChange(
-    path: string,
-    options: DirChangeOptions = {},
+  path: string,
+  options: DirChangeOptions = {},
 ): OnEvent<[DeltaSet<DirChangeEntry>]> {
-
   const { filter = onDirChange$allowAll, isModified = onDirChange$mTimeChanged } = options;
   const store: DirChangeStore = {
     path,
     byName: new Map<string, DirChangeEntry>(),
   } as DirChangeStore;
 
-  return onDirChange$track(store, { filter, isModified }).do(
-      shareOn,
-      onDirChange$share(store),
-  );
+  return onDirChange$track(store, { filter, isModified }).do(shareOn, onDirChange$share(store));
 }
 
 function onDirChange$track(
-    store: DirChangeStore,
-    options: Required<DirChangeOptions>,
+  store: DirChangeStore,
+  options: Required<DirChangeOptions>,
 ): OnEvent<[DeltaSet<DirChangeEntry>]> {
   return onEventBy(receiver => {
-
     const dispatch = sendEventsTo(receiver);
 
     store.send = fileSet => {
@@ -97,8 +88,8 @@ function onDirChange$track(
     });
 
     const loadDir = onDirChange$debounce(
-        onDirChange$load(store, options, receiver.supply),
-        receiver.supply,
+      onDirChange$load(store, options, receiver.supply),
+      receiver.supply,
     );
 
     const watcher = watch(store.path, loadDir);
@@ -112,53 +103,42 @@ function onDirChange$track(
 }
 
 interface DirChangeStore {
-
   readonly path: string;
   readonly byName: Map<string, DirChangeEntry>;
   isSent: boolean;
 
   send(this: void, entries: DeltaSet<DirChangeEntry>): void;
-
 }
 
-function onDirChange$debounce(
-    load: () => Promise<void>,
-    supply: Supply,
-): () => void {
-
+function onDirChange$debounce(load: () => Promise<void>, supply: Supply): () => void {
   let whenReady: Promise<void>;
 
   return () => {
-
-    const canLoad = whenReady = Promise.resolve();
+    const canLoad = (whenReady = Promise.resolve());
 
     canLoad
-        .then(() => canLoad === whenReady
-            ? load()
-            : /* istanbul ignore next */ Promise.resolve())
-        .catch(supply.off.bind(supply));
+      .then(() => (canLoad === whenReady ? load() : /* istanbul ignore next */ Promise.resolve()))
+      .catch(supply.off.bind(supply));
   };
 }
 
 function onDirChange$load(
-    { path, byName, send }: DirChangeStore,
-    { filter, isModified }: Required<DirChangeOptions>,
-    supply: Supply,
+  { path, byName, send }: DirChangeStore,
+  { filter, isModified }: Required<DirChangeOptions>,
+  supply: Supply,
 ): () => Promise<void> {
-
   let statEntries = (dirEntries: Dirent[]): Promise<DirChangeEntry[]> => Promise.all(
-      dirEntries.filter(filter).map(
-          ({ name }) => stat(join(path, name), { bigint: true })
-              .then((stats): DirChangeEntry => ({ name, stats })),
-      ),
-  );
+      dirEntries
+        .filter(filter)
+        .map(({ name }) => stat(join(path, name), { bigint: true }).then(
+            (stats): DirChangeEntry => ({ name, stats }),
+          )),
+    );
   let sendEntries = (entries: DirChangeEntry[]): void => {
-
     const removedNames = new Set(byName.keys());
     const result = new DeltaSet(byName.values()).undelta();
 
     for (const entry of entries) {
-
       const { name } = entry;
       const oldEntry = byName.get(name);
 
@@ -178,7 +158,6 @@ function onDirChange$load(
     }
 
     removedNames.forEach(name => {
-
       const removedEntry = byName.get(name)!;
 
       byName.delete(name);
@@ -222,33 +201,29 @@ function onDirChange$mTimeChanged(newEntry: DirChangeEntry, oldEntry: DirChangeE
 }
 
 function onDirChange$share(
-    store: DirChangeStore,
-): (
-    source: OnEvent<[DeltaSet<DirChangeEntry>]>,
-) => OnEvent<[DeltaSet<DirChangeEntry>]> {
+  store: DirChangeStore,
+): (source: OnEvent<[DeltaSet<DirChangeEntry>]>) => OnEvent<[DeltaSet<DirChangeEntry>]> {
   return source => onEventBy(receiver => {
+      const { supply, receive } = receiver;
+      let set: Set<DirChangeEntry>;
 
-    const { supply, receive } = receiver;
-    let set: Set<DirChangeEntry>;
+      if (store.isSent) {
+        set = new Set(store.byName.values());
+        sendEventsTo(receiver)(new DeltaSet(set));
+      } else {
+        set = new Set();
+      }
 
-    if (store.isSent) {
-      set = new Set(store.byName.values());
-      sendEventsTo(receiver)(new DeltaSet(set));
-    } else {
-      set = new Set();
-    }
+      source({
+        supply,
+        receive(_ctx, received) {
+          const result = new DeltaSet(set).undelta();
 
-    source({
-      supply,
-      receive(_ctx, received) {
+          received.redelta(set);
+          received.redelta(result);
 
-        const result = new DeltaSet(set).undelta();
-
-        received.redelta(set);
-        received.redelta(result);
-
-        receive(_ctx, result);
-      },
+          receive(_ctx, result);
+        },
+      });
     });
-  });
 }

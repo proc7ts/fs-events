@@ -9,7 +9,6 @@ import { fileURLToPath, URL } from 'node:url';
 import { DirChangeEntry, onDirChange } from './on-dir-change';
 
 describe('onDirChange', () => {
-
   let testSupply: Supply;
 
   beforeEach(() => {
@@ -23,7 +22,6 @@ describe('onDirChange', () => {
   let onDir: OnEvent<[DeltaSet<DirChangeEntry>]>;
 
   beforeEach(async () => {
-
     const testRoot = fileURLToPath(new URL('../target/test', import.meta.url));
 
     await mkdir(testRoot, { recursive: true });
@@ -36,13 +34,11 @@ describe('onDirChange', () => {
   });
 
   it('reports empty directory', async () => {
-
     const set = await onDir;
 
     expect([...set]).toHaveLength(0);
   });
   it('reports non-empty directory', async () => {
-
     const file1 = await mkFile();
     const file2 = await mkFile();
     const fileSet = await onDir;
@@ -57,7 +53,6 @@ describe('onDirChange', () => {
     expect(deleted).toHaveLength(0);
   });
   it('reports created file', async () => {
-
     const file1 = await mkFile();
     const result = readDir();
 
@@ -78,7 +73,6 @@ describe('onDirChange', () => {
     expect(result.deleted).toHaveLength(0);
   });
   it('reports deleted file', async () => {
-
     const file1 = await mkFile();
     const file2 = await mkFile();
     const result = readDir();
@@ -101,7 +95,6 @@ describe('onDirChange', () => {
     expect(result.deleted).toEqual([file1]);
   });
   it('reports updated file', async () => {
-
     const file1 = await mkFile();
     const file2 = await mkFile();
     const result = readDir();
@@ -127,19 +120,14 @@ describe('onDirChange', () => {
     expect(result.deleted).toEqual([file2]);
   });
   it('does not report not updated file', async () => {
-
     const file1 = await mkFile();
     const file2 = await mkFile();
 
-    onDir = onDirChange(
-        testDir,
-        {
-          isModified(entry) {
-            return entry.name === basename(file1);
-          },
-        },
-    );
-
+    onDir = onDirChange(testDir, {
+      isModified(entry) {
+        return entry.name === basename(file1);
+      },
+    });
 
     const result = readDir();
 
@@ -164,7 +152,6 @@ describe('onDirChange', () => {
     expect(result.deleted).toEqual([file1]);
   });
   it('reports changes to multiple receivers', async () => {
-
     const file1 = await mkFile();
     const result1 = readDir();
 
@@ -200,19 +187,17 @@ describe('onDirChange', () => {
   }
 
   function addedNames(set: DeltaSet<DirChangeEntry>): string[] {
-
     let result: string[] = [];
 
-    set.redelta(added => result = allNames(added));
+    set.redelta(added => (result = allNames(added)));
 
     return result;
   }
 
   function deletedNames(set: DeltaSet<DirChangeEntry>): string[] {
-
     let result: string[] = [];
 
-    set.redelta((_added, removed) => result = allNames(removed));
+    set.redelta((_added, removed) => (result = allNames(removed)));
 
     return result;
   }
@@ -225,13 +210,11 @@ describe('onDirChange', () => {
     readonly deleted: string[];
     whenRead(): Promise<void>;
   } {
-
     const supply = new Supply().needs(testSupply);
     let files = new DeltaSet<DirChangeEntry>();
     let resolver = newPromiseResolver();
 
     const result = {
-
       supply,
 
       get files() {
@@ -269,7 +252,6 @@ describe('onDirChange', () => {
   }
 
   async function mkFile(): Promise<string> {
-
     const fileName = join(testDir, `file-${Math.random().toString(36).substr(2)}`);
 
     await writeFile(fileName, '\n');

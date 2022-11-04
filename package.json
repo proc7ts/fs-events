@@ -37,7 +37,7 @@
     "@proc7ts/primitives": "^3.0.2",
     "@run-z/eslint-config": "^3.3.0",
     "@run-z/rollup-helpers": "^2.1.0",
-    "@types/node": "^18.11.8",
+    "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
     "eslint": "^8.26.0",
@@ -55,7 +55,7 @@
     "shx": "^0.3.4",
     "ts-jest": "^29.0.3",
     "tslib": "^2.4.1",
-    "typedoc": "^0.23.19",
+    "typedoc": "^0.23.20",
     "typescript": "^4.8.4"
   },
   "scripts": {

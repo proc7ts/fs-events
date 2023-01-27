@@ -1,6 +1,6 @@
 {
   "name": "@proc7ts/fs-events",
-  "version": "1.0.0-dev.0",
+  "version": "1.0.0-dev.1",
   "description": "Functional file system events processor",
   "keywords": [
     "fs.watch",

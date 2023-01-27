@@ -1,5 +1,5 @@
 {
-  "entryPoints": ["src/index.ts"],
+  "entryPoints": ["src/mod.ts"],
   "name": "File System Events",
   "out": "./target/typedoc"
 }

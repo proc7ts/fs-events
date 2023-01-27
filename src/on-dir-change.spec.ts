@@ -6,7 +6,7 @@ import { Supply } from '@proc7ts/supply';
 import { mkdir, mkdtemp, rmdir, unlink, writeFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
-import { DirChangeEntry, onDirChange } from './on-dir-change';
+import { DirChangeEntry, onDirChange } from './on-dir-change.js';
 
 describe('onDirChange', () => {
   let testSupply: Supply;

@@ -23,6 +23,7 @@
     "types": "./dist/fs-events.d.ts",
     "default": "./dist/fs-events.js"
   },
+  "sideEffects": false,
   "engines": {
     "node": ">= 16.15"
   },

@@ -28,7 +28,7 @@
     "node": ">= 16.15"
   },
   "peerDependencies": {
-    "@proc7ts/fun-events": "^10.5.1"
+    "@proc7ts/fun-events": "^10.5.3"
   },
   "dependencies": {
     "@proc7ts/delta-set": "^2.0.1",
